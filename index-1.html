@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10002b"><title>LiteVault — Espacio privado</title>
+<style>
+:root{color-scheme:dark;--bg:#090018;--panel:#16052f;--line:#43206e;--violet:#a855f7;--pink:#e879f9;--muted:#b8a7cc}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -10%,#37106c 0,transparent 55%),linear-gradient(145deg,#080014,#10002b 60%,#090018);font:16px system-ui;color:#fff;display:grid;place-items:center;padding:22px}
+main{width:min(100%,520px)}.card{background:#16052feF;border:1px solid #542c7b;border-radius:24px;padding:28px;box-shadow:0 20px 80px #0009,0 0 45px #8b2be533}
+.brand{text-align:center}.logo{width:118px;height:118px;object-fit:cover;border-radius:24px;box-shadow:0 0 32px #b026ff55;border:1px solid #a855f7}.brand h1{margin:14px 0 4px;letter-spacing:2px}.sub{color:var(--muted);margin:0 0 24px}
+button,input{font:inherit}button{width:100%;border:0;border-radius:13px;padding:14px 18px;background:linear-gradient(100deg,#7c3aed,#c026d3);color:white;font-weight:750;cursor:pointer;box-shadow:0 8px 24px #8b2be544}button.secondary{background:#291342;border:1px solid var(--line);box-shadow:none;margin-top:10px}button:disabled{opacity:.5;cursor:wait}
+.note{font-size:13px;line-height:1.5;color:var(--muted);margin-top:18px}.hidden{display:none!important}.field{display:grid;gap:8px;margin:16px 0}.field input{width:100%;padding:13px;border-radius:12px;border:1px solid var(--line);background:#0d0320;color:white;outline:none}.field input:focus{border-color:var(--pink)}.avatar{width:58px;height:58px;border-radius:50%;border:2px solid var(--pink)}.profile{display:flex;align-items:center;gap:14px;background:#0e0320;padding:14px;border-radius:16px;margin:18px 0}.status{color:#d8b4fe;font-size:14px;min-height:22px}.dots{display:flex;justify-content:center;gap:8px;margin:24px}.dots i{width:9px;height:9px;background:#d946ef;border-radius:50%;animation:pulse 1s infinite alternate}.dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}@keyframes pulse{to{opacity:.2;transform:translateY(-5px)}}.pill{display:inline-block;border:1px solid #68408a;border-radius:99px;padding:5px 10px;color:#e9d5ff;font-size:12px}
+</style>
+</head>
+<body><main>
+<section class="card" id="welcome">
+<div class="brand"><img class="logo" src="/logo.jpg" alt="Logo LiteVault"><h1>LITEVAULT</h1><p class="sub">Tu espacio digital privado</p></div>
+<button id="discordBtn">Continuar con Discord</button>
+<p class="note">El acceso se realiza mediante Discord OAuth oficial. LiteVault no solicita contraseñas de Discord, frases semilla ni claves privadas.</p>
+</section>
+<section class="card hidden" id="setup">
+<div class="brand"><img class="logo" src="/logo.jpg" alt="Logo LiteVault"><h1>CREA TU ESPACIO</h1><p class="sub">Configura tu acceso privado</p></div>
+<div class="profile"><img id="avatar" class="avatar" alt="Avatar"><div><strong id="username"></strong><div class="status">Cuenta de Discord conectada</div></div></div>
+<div class="field"><label for="pin">Crea un PIN de 6 dígitos</label><input id="pin" inputmode="numeric" autocomplete="new-password" maxlength="6" placeholder="••••••"></div>
+<div class="field"><label for="pin2">Confirma tu PIN</label><input id="pin2" inputmode="numeric" autocomplete="new-password" maxlength="6" placeholder="••••••"></div>
+<button id="createBtn">Crear mi espacio</button>
+<p class="note">El PIN se usa como bloqueo de interfaz en este navegador. Para protección real del dispositivo, activa también el bloqueo de pantalla. No uses aquí tu PIN bancario.</p>
+</section>
+<section class="card hidden" id="loading">
+<div class="brand"><img class="logo" src="/logo.jpg" alt=""><h1>LITEVAULT</h1><p class="sub">Creando tu espacio virtual privado</p><div class="dots"><i></i><i></i><i></i></div><p class="status" id="loadText">Preparando tu espacio seguro...</p></div>
+</section>
+<section class="card hidden" id="vault">
+<div class="brand"><img class="logo" src="/logo.jpg" alt=""><h1>ESPACIO PRIVADO</h1><p class="sub">Bienvenido a LiteVault</p></div>
+<div class="profile"><img id="vaultAvatar" class="avatar" alt=""><div><strong id="vaultName"></strong><div class="status">Sesión de Discord verificada</div></div></div>
+<div class="pill">Espacio activo</div>
+<h3>Tu espacio está listo</h3>
+<p class="note">Aquí puedes guardar notas y datos no secretos. Nunca introduzcas ni almacenes frases semilla, claves privadas, contraseñas o códigos de recuperación.</p>
+<div class="field"><label for="notes">Notas personales (sin secretos)</label><textarea id="notes" rows="4" style="width:100%;padding:13px;border-radius:12px;border:1px solid var(--line);background:#0d0320;color:white"></textarea></div>
+<button id="saveNotes">Guardar notas en este navegador</button>
+<button class="secondary" id="lockBtn">Bloquear espacio</button>
+<button class="secondary" id="logoutBtn">Cerrar sesión de Discord</button>
+</section>
+<section class="card hidden" id="locked">
+<div class="brand"><img class="logo" src="/logo.jpg" alt=""><h1>ESPACIO BLOQUEADO</h1><p class="sub">Introduce tu PIN para continuar</p></div>
+<div class="field"><label for="unlockPin">PIN de 6 dígitos</label><input id="unlockPin" inputmode="numeric" maxlength="6" placeholder="••••••"></div>
+<button id="unlockBtn">Desbloquear</button><p class="status" id="pinError"></p>
+<button class="secondary" id="logoutLocked">Cerrar sesión</button>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let user=null;
+function show(id){['welcome','setup','loading','vault','locked'].forEach(x=>$(x).classList.toggle('hidden',x!==id))}
+function avatarUrl(u){return u.avatar?`https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=128`:`https://cdn.discordapp.com/embed/avatars/${Number(u.discriminator||0)%5}.png`}
+async function getMe(){const r=await fetch('/.netlify/functions/auth?action=me');if(!r.ok)return null;const d=await r.json();return d.user||null}
+async function init(){user=await getMe();if(!user){show('welcome');return}fillProfile();if(localStorage.getItem('lv_pin_hash'))show('locked');else show('setup')}
+function fillProfile(){const a=avatarUrl(user);$('avatar').src=a;$('vaultAvatar').src=a;$('username').textContent=user.global_name||user.username;$('vaultName').textContent=user.global_name||user.username}
+$('discordBtn').onclick=()=>location.href='/.netlify/functions/auth?action=login';
+$('createBtn').onclick=async()=>{const a=$('pin').value,b=$('pin2').value;if(!/^\d{6}$/.test(a)){alert('El PIN debe tener exactamente 6 números.');return}if(a!==b){alert('Los PIN no coinciden.');return}const salt=crypto.getRandomValues(new Uint8Array(16));const enc=new TextEncoder();const key=await crypto.subtle.importKey('raw',enc.encode(a),'PBKDF2',false,['deriveBits']);const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations:150000,hash:'SHA-256'},key,256);localStorage.setItem('lv_pin_hash',Array.from(new Uint8Array(bits)).map(x=>x.toString(16).padStart(2,'0')).join(''));localStorage.setItem('lv_pin_salt',Array.from(salt).join(','));show('loading');setTimeout(()=>show('vault'),2200)};
+$('unlockBtn').onclick=async()=>{const p=$('unlockPin').value;if(!/^\d{6}$/.test(p)){ $('pinError').textContent='Introduce seis números.';return}const salt=new Uint8Array(localStorage.getItem('lv_pin_salt').split(',').map(Number));const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(p),'PBKDF2',false,['deriveBits']);const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations:150000,hash:'SHA-256'},key,256);const hash=Array.from(new Uint8Array(bits)).map(x=>x.toString(16).padStart(2,'0')).join('');if(hash===localStorage.getItem('lv_pin_hash')){ $('pinError').textContent='';show('vault')}else $('pinError').textContent='PIN incorrecto.'};
+$('lockBtn').onclick=()=>{ $('unlockPin').value='';show('locked')};
+$('saveNotes').onclick=()=>{localStorage.setItem('lv_notes',$('notes').value);alert('Notas guardadas en este navegador.')};
+$('logoutBtn').onclick=$('logoutLocked').onclick=async()=>{await fetch('/.netlify/functions/auth?action=logout');localStorage.removeItem('lv_pin_hash');localStorage.removeItem('lv_pin_salt');show('welcome');user=null};
+(async()=>{await init();$('notes').value=localStorage.getItem('lv_notes')||''})();
+</script></body></html>
